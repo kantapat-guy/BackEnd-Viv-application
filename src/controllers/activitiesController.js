@@ -43,7 +43,7 @@ const deleteActivity = async (req,res)=>{
     res.status(204).send("Delete an activity");
 }
 
-//For Pie Chart
+//For Pie Chart using Aggregation
 const sumMonth = async (req, res) => {
     const data = await ActivityModel.aggregate( 
         [

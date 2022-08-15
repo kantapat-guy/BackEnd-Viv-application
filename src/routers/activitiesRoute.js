@@ -19,6 +19,6 @@ router.patch('/:activityId', editActivity)
 
 router.delete('/:activityId', deleteActivity)
 
-router.get('/summaryMonth', sumMonth)
+router.get('/summaryMonth', sumMonth) //for pie chart
 
 module.exports = router;
