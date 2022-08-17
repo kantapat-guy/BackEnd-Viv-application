@@ -2,6 +2,9 @@ const ActivityModel = require('../models/activityModel')
 
 const showAllActivities = async (req,res) => {
     const activities = await ActivityModel.find();
+    if (!activities) {
+        res.status(404).send('Not found, the resource does not exist')
+    }
     res.send(activities)
 }
 

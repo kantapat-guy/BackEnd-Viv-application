@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require("cors");
+const mongoose = require('mongoose');
 const activityRouter = require('../src/routers/activitiesRoute')
 const scheduleRouter = require('../src/routers/scheduleRoute');
 const config = require('../config');
@@ -9,8 +10,7 @@ const app = express();
 
 //middleware
 if (config.isVercel) {
-    app.use(async (req, res, next) => {
-    //Connect mongoDB
+    app.use ( async (req, res, next) => {
     await mongoose.connect(config.mongoDB, {dbName: "VivApplication"})
     return next();
 })
