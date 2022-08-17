@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require("cors");
 const activityRouter = require('../src/routers/activitiesRoute')
 const scheduleRouter = require('../src/routers/scheduleRoute');
-const { config } = require('dotenv');
+const config = require('../config');
 
 
 const app = express();
