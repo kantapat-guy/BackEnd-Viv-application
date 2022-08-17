@@ -17,6 +17,7 @@ mongoose.connect(config.mongoDB, {dbName: "VivApplication"})
 app.use(cors());
 app.use(express.json())
 
+
 app.use('/activities', activityRouter)
 app.use('/schedule', scheduleRouter)
 

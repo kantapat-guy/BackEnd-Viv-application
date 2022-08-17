@@ -2,7 +2,7 @@ const ActivityModel = require('../models/activityModel')
 
 const showAllActivities = async (req,res) => {
     const activities = await ActivityModel.find();
-    res.send(activities.map((act)=> act.toJSON()))
+    res.send(activities)
 }
 
 const showActivity = async (req,res)=>{
@@ -10,7 +10,7 @@ const showActivity = async (req,res)=>{
     if (!activity) {
         res.status(404).send('Not found, the resource does not exist')
     }
-    res.send(activity.toJSON())
+    res.send(activity)
 }
 
 const createActivity = async (req,res)=>{
@@ -20,7 +20,7 @@ const createActivity = async (req,res)=>{
         return res.status(400).send('Bad request')
     }
     await activity.save();
-    res.send(activity.toJSON())
+    res.send(activity)
 }
 
 const editActivity = async (req,res)=>{
@@ -51,7 +51,7 @@ const sumMonth = async (req, res) => {
                 { 
                 _id: {month: { $month: "$date" }, type: "$ActType"},
                 total_hour: { $sum: "$hour" },
-                total_minute: { $sum: "$minute" } 
+                total_minute: { $sum: "$minute" }
             } }
         ]
     )

@@ -11,6 +11,7 @@ const activitySchema = new mongoose.Schema ({
             required: true},
     description: { type: String },
 }
+,{versionKey: false}
 // ,{
 //     statics: {
 //       findByType: async function (type) {

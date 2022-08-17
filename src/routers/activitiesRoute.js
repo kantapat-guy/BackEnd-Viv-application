@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/', showAllActivities)
 
-router.get('/:activityId', showActivity)
+router.get('/show/:activityId', showActivity)
 
 router.post('/create', createActivity)
 
