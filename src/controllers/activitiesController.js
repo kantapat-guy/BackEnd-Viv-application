@@ -54,8 +54,14 @@ const sumMonth = async (req, res) => {
                 { 
                 _id: {month: { $month: "$date" }, type: "$ActType"},
                 total_hour: { $sum: "$hour" },
-                total_minute: { $sum: "$minute" }
-            } }
+                total_minute: { $sum: "$minute" },
+
+            }},
+            { $project: 
+                {_id: 1,
+                total_hour:1,
+                total_minute: 1,
+                total: { $sum: ["$total_minute",{ $multiply: [ "$total_hour", 60 ] }]}}}
         ]
     )
     if (!data) {
