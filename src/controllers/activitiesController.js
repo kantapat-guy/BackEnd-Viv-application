@@ -1,4 +1,5 @@
 const ActivityModel = require('../models/activityModel')
+const mongoose = require('mongoose');
 
 const showAllActivities = async (req,res) => {
     const activities = await ActivityModel.find({
@@ -64,17 +65,23 @@ const deleteActivity = async (req,res)=>{
 
 //For Pie Chart using Aggregation
 const sumMonth = async (req, res) => {
+
+    const user = req.user.id
+
     const data = await ActivityModel.aggregate( 
+        
         [
+            { $match: {user: new mongoose.Types.ObjectId(user) }},
             { $group:
                 { 
-                _id: {month: { $month: "$date" }, type: "$ActType"},
+                _id: {user: "$user", month: { $month: "$date" }, type: "$ActType"},
                 total_hour: { $sum: "$hour" },
                 total_minute: { $sum: "$minute" },
 
             }},
             { $project: 
                 {_id: 1,
+                user:1,
                 total_hour:1,
                 total_minute: 1,
                 total: { $sum: ["$total_minute",{ $multiply: [ "$total_hour", 60 ] }]}}}
@@ -87,7 +94,11 @@ const sumMonth = async (req, res) => {
 }
 
 const sumWeek = async (req, res) => {
+
+    const user = req.user.id
+
     const act = await ActivityModel.aggregate([
+      { $match: {user: new mongoose.Types.ObjectId(user) }},
       { $group:
           {
           _id: {user: "$user",week: {$floor: {$divide: [{$dayOfMonth: "$date"}, 7]}}, type: "$ActType"},
