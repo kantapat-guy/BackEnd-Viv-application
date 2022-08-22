@@ -10,15 +10,9 @@ const activitySchema = new mongoose.Schema ({
     date: { type: Date,
             required: true},
     description: { type: String },
+    //owner
 }
 ,{versionKey: false}
-// ,{
-//     statics: {
-//       findByType: async function (type) {
-//         return this.find({ type });
-//       },
-//     },
-//   }
 );
 
 const ActivityModel = mongoose.model('activity', activitySchema);

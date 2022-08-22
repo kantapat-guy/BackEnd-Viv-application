@@ -4,7 +4,8 @@ const {showAllActivities,
        createActivity,
        editActivity,
        deleteActivity,
-       sumMonth
+       sumMonth,
+       sumWeek
     } = require('../controllers/activitiesController');
 
 const router = express.Router();
@@ -20,5 +21,7 @@ router.patch('/:activityId', editActivity)
 router.delete('/:activityId', deleteActivity)
 
 router.get('/summaryMonth', sumMonth) //for pie chart
+
+router.get('/summaryWeek', sumWeek) //for pie chart
 
 module.exports = router;
