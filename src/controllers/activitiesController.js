@@ -45,14 +45,14 @@ const editActivity = async (req,res)=>{
         new: true,
       })
 
-    if (!user) {
-        res.status(401).send('User not found, the resource does not exist')
-    }
+    // if (!user) {
+    //     res.status(401).send('User not found, the resource does not exist')
+    // }
 
     if (!activity) {
         res.status(400).send('Activity not found, the resource does not exist')
     }
-    res.status(200).json(activity)
+    res.status(200).json(editActivity);
 }
 
 const deleteActivity = async (req,res)=>{
