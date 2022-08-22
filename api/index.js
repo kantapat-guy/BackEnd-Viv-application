@@ -18,11 +18,18 @@ if (config.isVercel) {
 
 app.use(cors({
     origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200,
   }));
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
+
+
+app.use('/users', require('../src/routers/usersRoute'));
 
 app.use('/activities', activityRouter)
 app.use('/schedule', scheduleRouter)
+
+
+// localhost:3000/users/me/activites
 
 module.exports = app;

@@ -1,7 +1,9 @@
 const ActivityModel = require('../models/activityModel')
 
 const showAllActivities = async (req,res) => {
-    const activities = await ActivityModel.find();
+    const activities = await ActivityModel.find({
+        // owner: req.user.id
+    });
     if (!activities) {
         res.status(404).send('Not found, the resource does not exist')
     }
@@ -10,6 +12,7 @@ const showAllActivities = async (req,res) => {
 
 const showActivity = async (req,res)=>{
     const activity = await ActivityModel.findById(req.params.activityId);
+    //req.user.id === activity owner ? 401 ?
     if (!activity) {
         res.status(404).send('Not found, the resource does not exist')
     }
@@ -17,6 +20,7 @@ const showActivity = async (req,res)=>{
 }
 
 const createActivity = async (req,res)=>{
+    // req.body.owner = req.user.id
     const activity = new ActivityModel(req.body);
     const validateResult = activity.validateSync();
     if (validateResult) {
@@ -70,11 +74,40 @@ const sumMonth = async (req, res) => {
     res.send(data)
 }
 
+const sumWeek = async (req, res) => {
+
+    const data = await ActivityModel.aggregate( 
+        [
+
+            { $sort: { date: -1 } },
+            { $group:
+                { 
+                _id: { date:"$date", type: "$ActType"},
+                total_hour: { $sum: "$hour" },
+                total_minute: { $sum: "$minute" },
+
+            }},
+            { $project: 
+                {_id: 1,
+                date: 1,
+                total_hour:1,
+                total_minute: 1,
+                total: { $sum: ["$total_minute",{ $multiply: [ "$total_hour", 60 ] }]}}}
+        ]
+    )
+    if (!data) {
+        res.status(404).send('Not found, the resource does not exist')
+    }
+    res.send(data)
+}
+
+
 module.exports = {
     showAllActivities,
     showActivity,
     createActivity,
     editActivity,
     deleteActivity,
-    sumMonth
+    sumMonth,
+    sumWeek
 }

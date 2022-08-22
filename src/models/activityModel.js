@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const activitySchema = new mongoose.Schema ({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+      },
     ActType:{ type:String,
             required: true },
     hour: { type: Number,
@@ -12,13 +17,6 @@ const activitySchema = new mongoose.Schema ({
     description: { type: String },
 }
 ,{versionKey: false}
-// ,{
-//     statics: {
-//       findByType: async function (type) {
-//         return this.find({ type });
-//       },
-//     },
-//   }
 );
 
 const ActivityModel = mongoose.model('activity', activitySchema);
