@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const asyncHandler = require('express-async-handler');
 const User = require("../models/userModel");
+const Img = require("../models/imgModel")
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -67,11 +68,14 @@ const loginUser = async (req, res) => {
         }
   }
   
-  // @desc    Get user data
   // @route   GET /api/users/me
-  // @access  Private
   const getMe = async (req, res) => {
-    res.status(200).json(req.user)
+    const {_id, name, lastname} = await User.findById(req.user.id)
+    res.status(200).json({
+      id:_id,
+      name,
+      lastname
+    })
   }
   
   // Generate JWT
@@ -81,15 +85,49 @@ const loginUser = async (req, res) => {
     })
   }
 
+  const uploadPicture = async (req,res) => {
+  const find = await Img.findById(req.user.id)
+  const { url} = req.body
+  if(find) {
+    const img = await Img.updateOne({
+      url: url
+    })
+    res.status(201).json({
+      user: img.user,
+      url: img.url,
+    })
+  } else {
+    const img = await Img.create({
+      _id: req.user.id,
+      user: req.user.id,
+      url: url,
+    })
+
+    if (img) {
+      res.status(201).json({
+        user: img.user,
+        url: img.url,
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user data')
+    }
+    }
+}
+
+  const getImg = asyncHandler(async (req, res) => {
+    const { user, url } = await Img.findById(req.user.id)
+     res.status(200).json({
+      user,
+      url
+    })
+  })
+
+
   module.exports = {
     registerUser,
     loginUser,
     getMe,
+    uploadPicture,
+    getImg
   }
-
-
-// exports.requireLogin = expressjwt({
-//     secret:process.env.JWT_SECRET,
-//     algorithms: ["HS256"],
-//     userProperty:"auth"
-// })
