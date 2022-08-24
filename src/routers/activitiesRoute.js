@@ -5,12 +5,15 @@ const {showAllActivities,
        editActivity,
        deleteActivity,
        sumMonth,
-       sumWeek
+       sumWeek,
+       showAscActivities
     } = require('../controllers/activitiesController');
 
 const router = express.Router();
 
 router.get('/', showAllActivities)
+
+router.get('/asc', showAscActivities)
 
 router.get('/show/:activityId', showActivity)
 
