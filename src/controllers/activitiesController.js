@@ -2,9 +2,15 @@ const ActivityModel = require('../models/activityModel')
 const mongoose = require('mongoose');
 
 const showAllActivities = async (req,res) => {
-    const activities = await ActivityModel.find({
-        user: req.user.id
-    });
+    const activities = await ActivityModel.find({user: req.user.id}).sort({date: -1});
+    if (!activities) {
+        res.status(404).send('Not found, the resource does not exist')
+    }
+    res.send(activities)
+}
+
+const showAscActivities = async (req,res) => {
+    const activities = await ActivityModel.find({user: req.user.id}).sort({date: 1});
     if (!activities) {
         res.status(404).send('Not found, the resource does not exist')
     }
@@ -127,5 +133,6 @@ module.exports = {
     editActivity,
     deleteActivity,
     sumMonth,
-    sumWeek
+    sumWeek,
+    showAscActivities
 }
